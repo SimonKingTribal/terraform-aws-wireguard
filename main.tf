@@ -28,7 +28,7 @@ data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-*-22.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
   filter {
     name   = "virtualization-type"
@@ -77,26 +77,24 @@ resource "aws_autoscaling_group" "wireguard_asg" {
     create_before_destroy = true
   }
 
-  tags = [
-    {
-      key                 = "Name"
-      value               = aws_launch_configuration.wireguard_launch_config.name
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Project"
-      value               = "wireguard"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "env"
-      value               = var.env
-      propagate_at_launch = true
-    },
-    {
-      key                 = "tf-managed"
-      value               = "True"
-      propagate_at_launch = true
-    },
-  ]
+  tag {
+    key                 = "Name"
+    value               = aws_launch_configuration.wireguard_launch_config.name
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Project"
+    value               = "wireguard"
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "env"
+    value               = var.env
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "tf-managed"
+    value               = "True"
+    propagate_at_launch = true
+  }
 }
